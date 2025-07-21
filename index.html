@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 WEBSITE STORE KINGMAELL🚀</title>
+    <style>
+        /* Background Styles */
+        body {
+            background-color: #000;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 102, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 20%),
+                linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,1));
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: #e6f1ff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glow Effects */
+        .glow-effect {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .glow-blue {
+            background: #0066ff;
+            top: -100px;
+            left: -100px;
+        }
+        
+        .glow-teal {
+            background: #00f2fe;
+            bottom: -100px;
+            right: -100px;
+        }
+        
+        .glow-accent {
+            background: #64ffda;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-logo {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #0066ff, #00f2fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .loading-bar-container {
+            width: 80%;
+            max-width: 400px;
+            height: 20px;
+            background-color: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0066ff, #00f2fe);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .loading-percentage {
+            color: #64ffda;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .loading-message {
+            color: #e6f1ff;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Main Content Styles (will be hidden during loading) */
+        .main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Color Variables */
+        :root {
+            --primary: #0066ff;
+            --secondary: #00f2fe;
+            --dark: #000000;
+            --light: #e6f1ff;
+            --accent: #64ffda;
+            --card-bg: rgba(17, 17, 17, 0.8);
+            --price-bg: rgba(10, 10, 10, 0.8);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--light);
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .tab-btn:hover {
+            background: rgba(100, 255, 218, 0.2);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.5);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Common Styles */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin: 0 auto 1rem;
+            display: block;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        .led-container {
+            background-color: rgba(17, 17, 17, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 90%;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .led-text {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 24px;
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            white-space: nowrap;
+            animation: scrollText 15s linear infinite;
+            display: inline-block;
+            padding-left: 100%;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.6);
+        }
+        
+        .btn-panel {
+            background: linear-gradient(135deg, #6e40c9, #a83cb3);
+        }
+        
+        .btn-sosmed {
+            background: linear-gradient(135deg, #ff6b6b, #ffa3a3);
+        }
+        
+        .btn-wa {
+            background-color: #25D366;
+        }
+        
+        .btn-telegram {
+            background-color: #0088cc;
+        }
+        
+        /* Price List Section */
+        .price-list, .panel-list, .sosmed-list {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .price-header, .panel-header, .sosmed-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .price-header h2, .panel-header h2, .sosmed-header h2 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-item, .panel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .price-item:last-child, .panel-item:last-child, .sosmed-item:last-child {
+            border-bottom: none;
+        }
+        
+        .price-desc, .panel-desc, .sosmed-desc {
+            color: var(--light);
+            font-size: 1.1rem;
+        }
+        
+        .price-tag, .panel-tag, .sosmed-tag {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .status {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 10px;
+            margin-left: 0.8rem;
+        }
+        
+        .ready {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .limited {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .benefits {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .benefits h3 {
+            color: var(--accent);
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefits ul {
+            padding-left: 1.5rem;
+        }
+        
+        .benefits li {
+            margin-bottom: 0.8rem;
+            color: rgba(230, 241, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .payment-section {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .payment-section h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        
+        .payment-method img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(100, 255, 218, 0.3);
+        }
+        
+        .payment-detail {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: var(--light);
+        }
+        
+        .contact-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-section h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .note {
+            font-size: 0.9rem;
+            color: rgba(136, 146, 176, 0.8);
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: rgba(230, 241, 255, 0.5);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        /* Social Media Section Styles */
+        .sosmed-item {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .sosmed-label {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .sosmed-value {
+            color: var(--light);
+            word-break: break-all;
+        }
+
+        .sosmed-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .sosmed-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Profile picture in sections */
+        .section-profile {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+        }
+        
+        .divider {
+            color: var(--accent);
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        
+        /* Settings Menu */
+        .settings-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .settings-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(30deg);
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.8);
+        }
+        
+        .settings-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .settings-dropdown p {
+            margin: 0 0 1rem 0;
+            color: var(--accent);
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .settings-dropdown a {
+            display: block;
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: center;
+            background: rgba(100, 255, 218, 0.1);
+            margin-top: 0.5rem;
+        }
+        
+        .settings-dropdown a:hover {
+            background: rgba(100, 255, 218, 0.2);
+            color: var(--accent);
+        }
+        
+        /* About Me Section */
+        .about-section {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .static-header {
+            text-align: center;
+            font-size: 24px;
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            background-color: rgba(17, 17, 17, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .about-content {
+            text-align: center;
+            color: #e6f1ff;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .school-info {
+            font-weight: bold;
+            color: #64ffda;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+        
+        .skills-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-category {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: left;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .skill-category h4 {
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        
+        .skill-category ul {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        
+        .skill-category li {
+            margin-bottom: 0.5rem;
+            color: rgba(230, 241, 255, 0.8);
+        }
+        
+        /* Experience Section */
+        .experience-section {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .experience-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .experience-item {
+            margin-bottom: 2rem;
+        }
+        
+        .experience-role {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .experience-type {
+            font-style: italic;
+            color: rgba(230, 241, 255, 0.7);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .experience-description {
+            color: rgba(230, 241, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        /* Journey section styles */
+        .journey-section {
+            background-color: var(--price-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .journey-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .journey-item {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .journey-item:before {
+            content: "•";
+            color: var(--accent);
+            font-size: 2rem;
+            position: absolute;
+            left: 0;
+            top: -0.5rem;
+        }
+        
+        .journey-item-title {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .journey-item-description {
+            color: rgba(230, 241, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Glow Effects -->
+    <div class="glow-effect glow-blue"></div>
+    <div class="glow-effect glow-teal"></div>
+    <div class="glow-effect glow-accent"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">𝙇𝙊𝘼𝘿𝙄𝙉𝙂 𝙒𝙀𝘽𝙎𝙄𝙏𝙀...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+        <div class="loading-message" id="loadingMessage">Memuat website...</div>
+    </div>
+    
+    <!-- Main Content (hidden during loading) -->
+    <div class="main-content" id="mainContent">
+        <div class="settings-menu">
+            <button class="settings-btn" id="settingsBtn">⚙️</button>
+            <div class="settings-dropdown" id="settingsDropdown">
+                <p>INGIN PUNYA WEBSITE JUGA?</p>
+                <a href="https://t.me/Kingmaell" target="_blank">HUBUNGI ADMIN TELEGRAM</a>
+  
+                <a href="https://wa.me/6285813506278" target="_blank">HUBUNGI WA ADMIN</a>
+            </div>
+        </div>
+        
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="dashboard">Beranda</button>
+                <button class="tab-btn" data-tab="vps">Harga VPS</button>
+                <button class="tab-btn" data-tab="panel">Kebutuhan Panel</button>
+                <button class="tab-btn" data-tab="sosmed">Sosial Media</button>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="tab-content active">
+                <header>
+                    <img src="https://ar-hosting.pages.dev/1752840221963.jpg" alt="Profile Picture" class="profile-pic">
+                    <div class="logo">𝙒𝙀𝙇𝘾𝙊𝙈𝙀 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙃𝙊𝙎𝙏𝙄𝙉𝙂 𝙆𝙄𝙉𝙂𝙈𝘼𝙀𝙇</div>
+                    <div class="tagline">TEMPAT KEBUTUHAN HOSTING TERLENGKAP NO 1</div>
+                </header>
+                
+                <div class="led-container">
+                    <div class="led-text">
+                        ★★★ TERIMAKASIH TELAH BERKUNGJUNG DI WEBSITE KINGMAELL ★★★ TERIMAKASIH ★★★ ★★★ TERIMAKASIH TELAH BERKUNGJUNG DI WEBSITE KINGMAELL ★★★ TERIMAKASIH ★★★
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 4rem 0;">
+                    <h2 style="font-size: 2rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                        𝙎𝙀𝙇𝘼𝙈𝘼𝙏 𝘿𝘼𝙏𝘼𝙉𝙂 𝘿𝙄 𝙒𝙀𝘽𝙎𝙄𝙏𝙀🌐
+                    </h2>
+                    <p style="max-width: 600px; margin: 0 auto 2rem; color: rgba(230, 241, 255, 0.7);">
+                        Jika ada masalah atau erorr segera hubungi kontak admin!!.
+                    </p>
+                </div>
+                
+                <!-- About Me Section -->
+                <div class="about-section">
+                    <div class="static-header">TENTANG SAYA ︎✎</div>
+                    <div class="about-content">
+                        <p>Saya adalah seorang pelajar yang bersemangat dalam dunia teknologi, khususnya dalam pengembangan web dan desain antarmuka. Saya senang belajar hal baru dan menciptakan solusi digital yang kreatif dan fungsional.</p>
+                        <p class="school-info">𖠿 SEKOLAH DI SMKN 4 PINRANG</p>
+                        </p>
+                        <p class="school-info">⛍ JURUSAN TEKNIK OTOMOTIF</p>
+                    </div>
+                    </div>
+                    
+                    <div class="static-header">MY SKILLS ☢</div>
+                    
+                    <div class="skills-section">
+                        <div class="skill-category">
+                            <h4>Programing🖥️🌐</h4>
+                            <ul>
+                                <li>HTML, CSS, JavaScript</li>
+                                <li>PHP (Dasar)</li>
+                                <li>React.js (Dasar)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Video & Foto Editor 📷</h4>
+                            <ul>
+                                <li>Adobe Premiere Pro</li>
+                                <li>Adobe Photoshop</li>
+                                <li>CapCut</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Design PCB 📊</h4>
+                            <ul>
+                                <li>Eagle</li>
+                                <li>EasyEDA</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>PLC 🗃</h4>
+                            <ul>
+                                <li>Ladder Diagram</li>
+                                <li>CX-Programmer (Omron)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Mikrokontroler 🖱</h4>
+                            <ul>
+                                <li>Arduino IDE (C++)</li>
+                                <li>ESP32 & NodeMCU</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Pneumatic 📈</h4>
+                            <ul>
+                                <li>Rangkaian Dasar</li>
+                                <li>Simulasi Fluidsim</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Perakitan Elektronik 🛠️</h4>
+                            <ul>
+                             <li>Troubleshooting</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience Section -->
+                    <div class="experience-section">
+                        <h2 class="experience-title">Experience</h2>
+                        
+                        <div class="experience-item">
+                            <h3 class="experience-role">Frontend Developer</h3>
+                            <span class="experience-type">(Self-Taught & Freelance)</span>
+                            <p class="experience-description">
+                                Merancang dan mengembangkan website modern menggunakan CSS dan JavaScript. Berfokus pada desain yang menarik secara visual, fungsionalitas yang intuitif, dan memastikan website responsif di semua perangkat.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Journey Section -->
+                    <div class="journey-section">
+                        <h2 class="journey-title">Perjalanan Saya  𓀦</h2>
+                        
+                        <div class="journey-item">
+                            <h3 class="journey-item-title">Awal Mula Ketertarikan</h3>
+                            <p class="journey-item-description">
+                                Semuanya berawal dari rasa penasaran melihat bagaimana website dan aplikasi dibuat. Dari situlah saya mulai menjelajahi dunia coding.
+                            </p>
+                        </div>
+                        
+                        <div class="journey-item">
+                            <h3 class="journey-item-title">Membangun Fondasi</h3>
+                            <p class="journey-item-description">
+                                Saya mendedikasikan waktu untuk belajar dasar-dasar HTML & CSS, mengubah baris-baris kode menjadi halaman web yang terlihat nyata.
+                            </p>
+                        </div>
+                        
+                        <div class="journey-item">
+                            <h3 class="journey-item-title">Menambahkan Interaktivitas</h3>
+                            <p class="journey-item-description">
+                                Setelah menguasai tampilan, saya menyelami JavaScript untuk memberikan kehidupan pada website, menambahkan logika dan interaksi dinamis.
+                            </p>
+                        </div>
+                        
+                        <div class="journey-item">
+                            <h3 class="journey-item-title">Proyek Nyata Pertama</h3>
+                            <p class="journey-item-description">
+                                Dengan bekal yang ada, saya berhasil membangun proyek-proyek pertama saya yang dapat Anda lihat di portofolio. Ini adalah pencapaian besar.
+                            </p>
+                        </div>
+                        
+                        <div class="journey-item">
+                            <h3 class="journey-item-title">Masa Depan & Tujuan</h3>
+                            <p class="journey-item-description">
+                                Perjalanan ini masih panjang. Saya bersemangat untuk terus belajar teknologi baru, berkolaborasi, dan tumbuh sebagai developer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer>
+                  
+                </footer>
+            </div>
+            
+            <!-- VPS Section -->
+            <div id="vps" class="tab-content">
+                <div class="section-profile">
+                    <img src="https://ar-hosting.pages.dev/1753025978755.jpg" alt="Profile Picture" class="section-profile-pic">
+                </div>
+                
+                <div class="price-list">
+                    <div class="price-header">
+                        <h2>𝙍𝙀𝘼𝘿𝙔 𝙑𝙋𝙎 𝘿𝙄𝙂𝙄𝙏𝘼𝙇 𝙊𝘾𝙀𝘼𝙉</h2>
+                        <p>PRICE LIST VPS🏷</p>
+                    </div>
+                    
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 1GB CORE 1</span>
+                        <span class="price-tag">➣ Rp 20.000 <span class="status ready">READY</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 2GB CORE 2</span>
+                        <span class="price-tag">➣ Rp 25.000 <span class="status ready">READY</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 4GB CORE 2</span>
+                        <span class="price-tag">➣ Rp 30.000 <span class="status ready">READY</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 8GB CORE 4</span>
+                        <span class="price-tag">➣ Rp 35.000 <span class="status ready">READY</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 16GB CORE 4</span>
+                        <span class="price-tag">➣ Rp 45.000 <span class="status ready">READY</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 16GB CORE 8</span>
+                        <span class="price-tag">➣ Rp 55.000 <span class="status limited">TERBATAS</span></span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-desc">📌 RAM 32GB CORE 8</span>
+                        <span class="price-tag">➣ Rp 60.000 <span class="status limited">TERBATAS</span></span>
+                    </div>
+                </div>
+                
+                <div class="benefits">
+                    <h3>🚀 KEUNTUNGAN BELI VPS 🚀</h3>
+                    <ul>
+                        <li>FREE INSTALL PANEL & WINGS</li>
+                        <li>FREE EGG BOT VERSI TERBARU</li>
+                        <li>FREE REQ HOSTNAME VPS</li>
+                        <li>FREE REQ SUBDOMAIN</li>
+                        <li>FREE REQ REGION, OS, DAN VERSI</li>
+                        <li>VPS HIGH QUALITY & FAST</li>
+                        <li>VPS DIJAMIN AWET DO BILL PP</li>
+                        <li>GARANSI 15 DAY ( 1x CLAIM )</li>
+                        <li>MASA AKTIF 30 DAY</li>
+                    </ul>
+                </div>
+                
+                <div class="payment-section">
+                    <h3>💳 METODE PEMBAYARAN</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1753025515174.jpg" alt="QRIS">
+                            <div class="payment-detail">Scan QRIS untuk pembayaran</div>
+                        </div>
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1752999033761.jpg" alt="DANA">
+                            <div class="payment-detail">DANA: 089527864537</div>
+                        </div>
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1752999034410.jpg" alt="GoPay">
+                            <div class="payment-detail">GoPay: 089527864537</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-section">
+                    <h3>☛ CONTACT ADMIN ☚</h3>
+                    <div class="btn-container">
+                        <a href="https://wa.me/62895605985577" class="btn btn-wa">WhatsApp</a>
+                        <a href="https://t.me/Kingmaell" class="btn btn-telegram">Telegram</a>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <p><strong>NOTE:</strong> JIKA WA C1 CHAT TELE SAJA DIKARENAKAN LAGI MUSIM BAND</p>
+                    <p>TESTI: <a href="https://whatsapp.com/channel/0029VbBt6dt77qVX8SFU" style="color: var(--accent);">whatsapp.com/channel/0029VbBt6dt77qVX8SF6</a></p>
+                    <div></div>
+                    <footer>
+                    © 2025 Digital @Kingmaell. All rights reserved.
+                </footer>
+                </div>
+            </div>
+            
+            <!-- Panel Section -->
+            <div id="panel" class="tab-content">
+                <div class="section-profile">
+                    <img src="https://ar-hosting.pages.dev/1753026035109.jpg" alt="Profile Picture" class="section-profile-pic">
+                </div>
+                
+                <div class="panel-list">
+                    <div class="panel-header">
+                        <h2>LIST KEBUTUHAN PANEL 🚀</h2>
+                        <p>PRICE LIST PANEL🏷</p>
+                    </div>
+                    
+                    <div class="panel-item">
+                        <span class="panel-desc">📌 LIST PANEL PRIV</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">1GB : 2k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">2GB : 3k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">3GB : 4k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">4GB : 6k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">5GB : 7k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">6GB : 8K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">7GB : 9K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">8GB : 8K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">9GB : 10K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">10GB : 12K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">UNLI : 5k (PROMO -6)</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    
+                    <div class="divider">▬▭▬▭▬▭▬▭▬▭▬▭▬▭▬▭</div>
+                    
+                    <div class="panel-item">
+                        <span class="panel-desc">📌 LIST KEBUTUHAN PANEL LAINNYA</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">RESELLER PANEL : 10k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">ADMIN PANEL : 15k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">OWNER PANEL : 20k</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                    <div class="panel-item">
+                        <span class="panel-desc">TANGAN KANAN PANEL : 30K</span>
+                        <span class="panel-tag"></span>
+                    </div>
+                </div>
+                
+                <div class="payment-section">
+                    <h3>💳 METODE PEMBAYARAN</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1753025515174.jpg" alt="QRIS">
+                            <div class="payment-detail">Scan QRIS untuk pembayaran</div>
+                        </div>
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1752999033761.jpg" alt="DANA">
+                            <div class="payment-detail">DANA: 089527864537</div>
+                        </div>
+                        <div class="payment-method">
+                            <img src="https://ar-hosting.pages.dev/1752999034410.jpg" alt="GoPay">
+                            <div class="payment-detail">GoPay: 089527864537</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="benefits">
+                    <h3>🚀 BENEFIT 🚀</h3>
+                    <ul>
+                        <li>ANTI DELAY</li>
+                        <li>GARANSI 7H</li>
+                        <li>HIGH QUALITY</li>
+                        <li>SPEK VPS R16 C8</li>
+                        <li>BISA CRATE PANEL SESUKA HATI</li>
+                        <li>BISA JUALAN PANEL</li>
+                        <li>BISA BIKIN RESELLER (JOIN ADP,PT)</li>
+                        <li>BISA BIKIN ADP (JOIN PT)</li>
+                        <li>BISA BIKIN PT (JOIN TANGAN KANAN)</li>
+                        <li>JAMIN BALMOD KALO USAHA</li>
+                        <li>PANEL PRIV</li>
+                        <li>DI BANTU DORONG SAMPAI BISA</li>
+                        <li>DIBANTU SEPENGETAHUAN GUA</li>
+                        <li>RESMI PANEL</li>
+                        <li>DEV BANYAK ALIANSI/PT/TK/OWN/ADMIN</li>
+                    </ul>
+                </div>
+                
+                <div class="contact-section">
+                    <h3>☛ CONTACT ADMIN ☚</h3>
+                    <div class="btn-container">
+                        <a href="https://wa.me/62895605985577" class="btn btn-wa">WhatsApp</a>
+                        <a href="https://t.me/Kingmaell" class="btn btn-telegram">Telegram</a>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <p><strong>NOTE:</strong> JIKA WA C1 CHAT TELE SAJA DIKARENAKAN LAGI MUSIM BAND</p>
+                    <p>TESTI: <a href="https://whatsapp.com/channel/0029VbBt6dt7Q226" style="color: var(--accent);">whatsapp.com/channel/0029VbBt6dt76</a></p>
+                </div>
+<div></div>
+                    <footer>
+                    © 2025 Digital @Kingmaell. All rights reserved.
+                </footer>
+            </div>
+            
+            <!-- Social Media Section -->
+            <div id="sosmed" class="tab-content">
+                <div class="section-profile">
+                    <img src="https://ar-hosting.pages.dev/1753026433176.jpg" alt="Profile Picture" class="section-profile-pic">
+                </div>
+                
+                <div class="sosmed-list">
+                    <div class="sosmed-header">
+                        <h2>INFO SOSIAL MEDIA KINGMAELL</h2>
+                        <p>📱 KONTAK DAN SOSIAL MEDIA KAMI</p>
+                    </div>
+                    
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 WA UTAMA:</div>
+                        <div class="sosmed-value">
+                            <a href="https://wa.me/62895605985577" class="sosmed-link">62895605985577</a>
+                        </div>
+                    </div>
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 WA JB²:</div>
+                        <div class="sosmed-value">
+                            <a href="https://wa.me/6282394613807" class="sosmed-link">6282394613807</a>
+                        </div>
+                    </div>
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 INSTAGRAM:</div>
+                        <div class="sosmed-value">
+                            <a href="https://www.instagram.com/ism4ildinull?igsh=dHBmdjFja21yeHhw" class="sosmed-link" target="_blank">@ISM4DINULL</a>
+                        </div>
+                    </div>
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 TELEGRAM:</div>
+                        <div class="sosmed-value">
+                            <a href="http://t.me//Kingmaell" class="sosmed-link" target="_blank">@Kingmaell</a>
+                        </div>
+                    </div>
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 𝙈𝘼𝙍𝙆𝙀𝙏 𝙃𝙊𝙎𝙏𝙄𝙉𝙂¹ [ 𝙏𝙀𝙍𝘽𝙐𝙆𝘼 ]:</div>
+                        <div class="sosmed-value">
+                            <a href="https://chat.whatsapp.com/LETzfTKAd500kg4rcqUnDq?mode=ac_t" class="sosmed-link" target="_blank">KLIK UNTUK MASUK KE GRUB { KLIK }
+                            </a>
+                              </div>
+                    </div>
+                    <div class="sosmed-item">
+                        <div class="sosmed-label">📌 𝙈𝘼𝙍𝙆𝙀𝙏 𝙃𝙊𝙎𝙏𝙄𝙉𝙂² [ 𝙏𝙀𝙍𝘽𝙐𝙆𝘼 ]:</div>
+                        <div class="sosmed-value">
+                            <a href="https://chat.whatsapp.com/ITNfUVpgJWmIzEWmt59Ck3?mode=ac_t" class="sosmed-link" target="_blank">KLIK UNTUK MASUK KE GRUB { KLIK }
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="benefits">
+                    <h3>💡 INFORMASI PENTING</h3>
+                    <ul>
+                        <li>Gunakan kontak resmi untuk menghindari penipuan</li>
+                        <li>Jam operasional: 08.00 - 22.00 WIB</li>
+                        <li>Respon tercepat melalui WhatsApp BOT</li>
+                        <li>Follow sosial media untuk update promo</li>
+                        <li>Testimoni asli bisa dilihat di Telegram</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <footer>
+                
+            </footer>
+        </div>
+    </div>
+    
+    <script>
+        // Loading Screen Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const mainContent = document.getElementById('mainContent');
+            
+            let progress = 0;
+            const messages = [
+                "Memuat website...",
+                "Menyiapkan konten...",
+                "Memuat daftar harga...",
+                "Hampir selesai..."
+            ];
+            
+            const loadingInterval = setInterval(function() {
+                progress += Math.floor(Math.random() * 10) + 1;
+                if (progress > 100) progress = 100;
+                
+                loadingBar.style.width = progress + '%';
+                loadingPercentage.textContent = progress + '%';
+                
+                // Change message at certain progress points
+                if (progress < 30) {
+                    loadingMessage.textContent = messages[0];
+                } else if (progress < 60) {
+                    loadingMessage.textContent = messages[1];
+                } else if (progress < 90) {
+                    loadingMessage.textContent = messages[2];
+                } else {
+                    loadingMessage.textContent = messages[3];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    loadingScreen.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                        mainContent.style.display = 'block';
+                        setTimeout(function() {
+                            mainContent.style.opacity = '1';
+                        }, 50);
+                    }, 500);
+                }
+            }, 150);
+        });
+        
+        // Tab Navigation
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Scroll to top when switching tabs
+                window.scrollTo(0, 0);
+            });
+        });
+        
+        // Settings menu toggle
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            const dropdown = document.getElementById('settingsDropdown');
+            dropdown.classList.toggle('show');
+        });
+        
+        // Close settings menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const settingsBtn = document.getElementById('settingsBtn');
+            const dropdown = document.getElementById('settingsDropdown');
+            
+            if (!settingsBtn.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
